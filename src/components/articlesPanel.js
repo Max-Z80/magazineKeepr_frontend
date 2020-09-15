@@ -1,4 +1,5 @@
 import React from "react";
+import { Table } from "react-bootstrap";
 
 export function ArticlesPanel(props) {
   const { articles } = props;
@@ -6,6 +7,38 @@ export function ArticlesPanel(props) {
     return null;
   }
 
-  debugger;
-  return articles.map((article) => <p> {article.title}</p>);
+  const articleRows =   articles.map(article => <tr>
+      <td>{article.title}</td>
+      <td>{article.page}</td>
+      <td>{article.type}</td>
+      <td>{article.comment}</td>
+      <td>{article.magazine.name}</td>
+      <td> {article.magazine.issue}</td>
+      <td> {article.magazine.location}</td>
+    </tr>
+  );
+
+  return <Table striped bordered hover>
+      <thead>
+    <tr>
+      <th>Title</th>
+      <th>page</th>
+      <th>type</th>
+      <th>comment</th>
+      <th>magazine</th>
+      <th>issue</th>
+      <th>location</th>
+    </tr>
+  </thead>
+  <tbody>
+  {articleRows}
+  </tbody>
+  </Table>
+  
+  
+  
+  
+
+
+
 }

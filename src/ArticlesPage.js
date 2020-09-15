@@ -12,7 +12,7 @@ export function ArticlesPage() {
   useEffect(() => {
     setFetching(true);
     axios
-      .get("http://192.168.0.10:8000/articles")
+      .get("http://localhost:8000/articles")
       .then((articles) => {
         setArticles(articles.data);
         setFetching(false);
