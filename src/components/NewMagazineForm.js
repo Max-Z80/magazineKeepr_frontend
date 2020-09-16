@@ -1,44 +1,73 @@
-import React from "react";
-import { Form, Col } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Col, Button } from "react-bootstrap";
+import axios from "axios";
 
 export default function NewMagazineForm(props) {
+  const [validated, setValidated] = useState(false);
+
+  function saveMagazine(magazine) {
+    return axios({
+      method: "POST",
+      url: "http://localhost:8000/magazine/add",
+      data: { magazine }
+    }).then(response => response.data);
+  }
+
+  function handleSubmit(event) {
+    const form = event.currentTarget;
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (form.checkValidity() === false) {
+      setValidated(true);
+      return;
+    }
+
+    // form is valid
+    const magazine = {
+      name: form.elements["name"].value,
+      issue: form.elements["issue"].value,
+      location: form.elements["location"].value
+    };
+    debugger;
+
+    saveMagazine(magazine).then(magazine => {
+      props.onSaveButtonClicked(magazine);
+    });
+  }
+
   return (
-    <Form>
+    <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Form.Row>
-        <Col xs={12} md={3}>
-          <Form.Group controlId="magazine.name">
-            <Form.Control
-              type="text"
-              name="magazine.name"
-              // onChange={handleChange}
-              placeholder="Name"
-              //value={formValues.magazine.name}
-            />
+        <Col xs={12} md={2}>
+          <Form.Group controlId="name">
+            <Form.Control type="text" required name="name" placeholder="Name" />
           </Form.Group>
         </Col>
 
-        <Col xs={12} md={3}>
-          <Form.Group controlId="magazine.issue">
+        <Col xs={12} md={2}>
+          <Form.Group controlId="issue">
             <Form.Control
               type="text"
-              name="magazine.issue"
-              //onChange={handleChange}
+              required
+              name="issue"
               placeholder="Issue"
-              //value={formValues.magazine.issue}
             />
           </Form.Group>
         </Col>
 
         <Col xs={12} md={6}>
-          <Form.Group controlId="magazine.location">
+          <Form.Group controlId="location">
             <Form.Control
               type="text"
-              name="magazine.location"
-              //onChange={handleChange}
+              required
+              name="location"
               placeholder="Location"
-              //value={formValues.magazine.location}
             />
           </Form.Group>
+        </Col>
+        <Col xs="auto">
+          <Button type="submit">ok</Button>
         </Col>
       </Form.Row>
     </Form>

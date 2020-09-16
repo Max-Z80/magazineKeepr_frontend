@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { ArticlesPanel } from "./components/articlesPanel";
 
-export function ArticlesPage() {
+export function ArticlesPage(props) {
   const [fetching, setFetching] = useState(true);
   const [articles, setArticles] = useState([]);
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ export function ArticlesPage() {
     setFetching(true);
     axios
       .get("http://localhost:8000/articles")
-      .then((articles) => {
+      .then(articles => {
         setArticles(articles.data);
         setFetching(false);
       })
@@ -36,7 +36,10 @@ export function ArticlesPage() {
       <Row>
         <Col xs={{ span: 10, offset: 1 }}>
           <h1> Current articles </h1>
-          <ArticlesPanel articles={articles} />
+          <ArticlesPanel
+            articles={articles}
+            onEditButtonClicked={props.onEditButtonClicked}
+          />
         </Col>
       </Row>
     </Container>
