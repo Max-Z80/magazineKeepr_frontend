@@ -28,6 +28,7 @@ export function NewOrEditArticlePage(props) {
   const [validated, setValidated] = useState(false);
   const [isMagazineSelectInvalid, setMagazineSelectValidity] = useState(false);
 
+  let titleInput = null; //
   useEffect(() => {
     axios
       .get(`http://localhost:8000/article/${articleId}/get`)
@@ -37,6 +38,7 @@ export function NewOrEditArticlePage(props) {
         setMagazine(article.magazine);
       });
   }, [articleId]);
+
 
   /**
    * Function triggered when the user clicks on the save button to create a magazine
@@ -51,6 +53,7 @@ export function NewOrEditArticlePage(props) {
     const form = event.currentTarget.form;
     event.preventDefault();
     event.stopPropagation();
+    titleInput.focus();
 
     if (form.checkValidity() === false || !magazine) {
       setValidated(true);
@@ -115,6 +118,7 @@ export function NewOrEditArticlePage(props) {
                     name="title"
                     placeholder="Title"
                     type="text"
+                    ref={(input) =>  titleInput = input }
                     required
                     value={article.title}
                   />
